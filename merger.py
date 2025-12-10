@@ -113,9 +113,9 @@ def handle_dependabot_pr(repo_full_name: str, pr: Dict) -> None:
     mergeable: Optional[bool] = pr.get("mergeable")
 
     if mergeable is None:
+        sleep(5)
         pr_details = fetch_pr_details(repo_full_name, pr_number)
         mergeable = pr_details.get("mergeable") if pr_details else False
-        sleep(1)
 
     log(f"PR #{pr_number}: {pr_title} -> mergeable: {mergeable}")
 
