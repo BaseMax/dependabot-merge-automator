@@ -26,7 +26,7 @@ def log(message: str) -> None:
 
 
 def fetch_all_repos() -> List[Dict]:
-    """Fetch all repositories for the user and cache them"""
+    """Fetch all repositories for the authenticated user and cache them"""
     if os.path.exists(CACHE_FILE):
         log(f"Loading cached repositories from {CACHE_FILE}")
         with open(CACHE_FILE, "r") as f:
@@ -36,7 +36,8 @@ def fetch_all_repos() -> List[Dict]:
     repos: List[Dict] = []
     page: int = 1
     while True:
-        url: str = f"https://api.github.com/users/{GITHUB_USER}/repos?per_page=100&page={page}"
+        # url: str = f"https://api.github.com/user/repos?per_page=100&page={page}"
+        url: str = f"https://api.github.com/user/repos?per_page=100&page={page}&affiliation=owner"
         resp = requests.get(url, headers=HEADERS)
         if resp.status_code != 200:
             raise Exception(f"Failed to fetch repos: {resp.text}")
