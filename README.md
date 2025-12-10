@@ -80,11 +80,11 @@ You can edit these directly in `merger.py` or enhance the script to read from en
 ## License
 
 MIT License
-Copyright (c) 2025 Seyyed Ali Mohammadiyeh (Max Base)
 
 ---
 
 ## Author
 
 Seyyed Ali Mohammadiyeh (Max Base)
+
 [GitHub Profile](https://github.com/BaseMax)
