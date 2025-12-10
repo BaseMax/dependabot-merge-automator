@@ -1,9 +1,3 @@
-#
-# 12/10/2025
-# Max Base
-# https://github.com/BaseMax/dependabot-merge-automator
-#
-
 import os
 import json
 import requests
@@ -15,6 +9,8 @@ GITHUB_TOKEN: str = os.environ.get("GITHUB_TOKEN", "")
 GITHUB_USER: str = "BaseMax"
 CACHE_FILE: str = "repos_cache.json"
 MERGE_METHOD: str = "squash"  # merge, squash, or rebase
+REQUEST_DELAY: int = 2        # seconds to sleep between API requests
+REPO_DELAY: int = 3           # seconds to sleep between repositories
 HEADERS: Dict[str, str] = {
     "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github+json"
@@ -46,6 +42,7 @@ def fetch_all_repos() -> List[Dict]:
             break
         repos.extend(data)
         page += 1
+        sleep(REQUEST_DELAY)
 
     with open(CACHE_FILE, "w") as f:
         json.dump(repos, f, indent=2)
@@ -69,6 +66,7 @@ def fetch_open_prs(repo_full_name: str) -> List[Dict]:
             break
         prs.extend(data)
         page += 1
+        sleep(REQUEST_DELAY)
     return prs
 
 
@@ -79,6 +77,7 @@ def fetch_pr_details(repo_full_name: str, pr_number: int) -> Optional[Dict]:
     if resp.status_code != 200:
         log(f"Failed to fetch PR details #{pr_number}: {resp.text}")
         return None
+    sleep(REQUEST_DELAY)
     return resp.json()
 
 
@@ -137,6 +136,8 @@ def process_repository(repo: Dict) -> None:
 
     for pr in dependabot_prs:
         handle_dependabot_pr(full_name, pr)
+
+    sleep(REPO_DELAY)
 
 
 # ---------- MAIN SCRIPT ----------
