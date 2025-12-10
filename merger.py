@@ -3,6 +3,9 @@ import json
 import requests
 from time import sleep
 from typing import List, Dict, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ---------- CONFIG ----------
 GITHUB_TOKEN: str = os.environ.get("GITHUB_TOKEN", "")
